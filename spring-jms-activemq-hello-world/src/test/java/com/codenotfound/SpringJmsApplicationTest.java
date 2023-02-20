@@ -22,9 +22,11 @@ public class SpringJmsApplicationTest {
 
   @Test
   public void testReceive() throws Exception {
-    sender.send("Hello Spring JMS ActiveMQ!");
+    for(int i=0;i<100;i++) {
+      sender.send("Hello Spring JMS ActiveMQ!");
+    }
+      receiver.getLatch().await(10000, TimeUnit.MILLISECONDS);
+      assertThat(receiver.getLatch().getCount()).isEqualTo(0);
 
-    receiver.getLatch().await(10000, TimeUnit.MILLISECONDS);
-    assertThat(receiver.getLatch().getCount()).isEqualTo(0);
   }
 }
